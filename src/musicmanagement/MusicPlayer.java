@@ -18,12 +18,38 @@ public class MusicPlayer {
     private ArrayList<Song> shuffleList;
 
     public MusicPlayer() {
+        playlist = new CircularLinkList();
+        history = new Stack<>();
+        shuffleList = new ArrayList<>();
     }
     
-    public void addSong(Song Song){}
-    public boolean removeSong(String idOrTitle){}
-    public Song searchSong(String keyword){}
-    public void viewAllSongs(){}
+    public void addSong(Song Song){
+        playlist.insertSong(song);
+    }
+
+    public Song getNextSong(){
+        if(isEmpty()){
+            return null;
+        }
+
+        if (current == null){
+            current = head;
+        } else {
+            current = current.next;
+        }
+        return current.data;
+    }
+    
+    public boolean removeSong(String idOrTitle){
+        return playlist.deleteSong(idOrTitle);
+    }
+    
+    public Song searchSong(String keyword){
+        return playlist.searchSong(keyWord);
+    }
+    public void viewAllSongs(){
+        playlist.displaySongs();
+    }
     
     public Song nextSong(){}
     public Song previousSong(){}
