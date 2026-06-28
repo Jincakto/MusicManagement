@@ -105,5 +105,38 @@ public class CircularLinkList {
 
        return null;
    }
+   
+   public void viewAllSongs(){
+       if(isEmpty()){
+           System.out.println("Playlist is empty");
+           return;
+       }
+       Node temp = head;
+       
+       do{
+           System.out.println(temp.data);
+           temp = temp.next;
+       } while (temp != head);
+   }
+   
+   public Song getCurrentSong(){
+       if(current == null){
+           return null;
+       }
+       return current.data;
+   }
+   
+   public Song getNextSong(){
+       if(isEmpty()){
+           return null;
+       }
+       
+       if(current == null){
+           current = head;
+       }else{
+           current = current.next;
+       }
+       return current.data;
+   }
    //viewAllSongs, getNextSong , getCurrent viet o day
 }

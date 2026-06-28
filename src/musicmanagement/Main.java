@@ -17,6 +17,9 @@ public class Main {
      */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        MusicPlayer player = new MusicPlayer();
+        player.loadSampleSongs();
+        
         int choice;
 
         do {
@@ -43,6 +46,7 @@ public class Main {
             switch (choice) {
                 case 1:
                     System.out.println("View All Songs selected.");
+                    player.viewAllSongs();
                     break;
                 case 2:
                     System.out.println("Add Song selected.");
@@ -55,6 +59,11 @@ public class Main {
                     break;
                 case 5:
                     System.out.println("Play Repeat selected.");
+                    Song song = player.playRepeat();
+                    if(song == null)
+                        System.out.println("No song is playing");
+                    else
+                        System.out.println("Repeat: "+ song);
                     break;
                 case 6:
                     System.out.println("Shuffle Play selected.");
@@ -64,6 +73,11 @@ public class Main {
                     break;
                 case 8:
                     System.out.println("Next Song selected.");
+                    Song next = player.nextSong();
+                    if(next == null)
+                        System.out.println("Playlist is empty");
+                    else
+                        System.out.println("Now Playing: "+ next);
                     break;
                 case 0:
                     System.out.println("Goodbye!");

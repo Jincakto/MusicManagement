@@ -1,84 +1,72 @@
-packet musicmanagement
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package musicmanagement;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ *
+ * @author votha
+ */
 public class MusicPlayer {
-    // 1. Khai báo các cấu trúc dữ liệu theo đề bài
-    private ArrayList<Song> playlist;
-    private Stack<Song> stackHistory;
-    private Song currentSong;
-    private final Random random;
+    private CircularLinkList playlist;
+    private Stack<Song> history;
+    private ArrayList<Song> shuffleList;
 
     public MusicPlayer() {
-        playlist = new ArrayList<>();
-        stackHistory = new Stack<>();
-        random = new Random();
-        currentSong = null;
+        playlist = new CircularLinkList(null, null, null);
+        history = new Stack<>();
+        shuffleList = new ArrayList<>();
     }
-
-    // Thêm bài hát vào danh sách phát
-    public void addSong(Song song) {
-        playlist.add(song);
+    
+    public void addSong(Song Song){
+        playlist.addSong(Song);
     }
-
-    // 2. Chức năng Shuffle Play (Phát ngẫu nhiên)
-    public void shufflePlay() {
-        if (playlist.isEmpty()) {
-            System.out.println("Playlist rỗng!");
-            return;
+    
+    public boolean removeSong(String idOrTitle){
+        return playlist.removeSong(idOrTitle);
+    }
+    
+    public Song searchSong(String keyword){
+        return playlist.searchSong(keyword);
+    }
+    public void viewAllSongs(){
+        playlist.viewAllSongs();
+    }
+    
+    public Song nextSong(){
+        Song currentSong = playlist.getCurrentSong();
+        
+        if(currentSong != null){
+            history.push(currentSong);
         }
-
-        // Nếu đang có một bài đang phát, lưu nó vào lịch sử trước khi đổi bài mới
-        if (currentSong != null) {
-            stackHistory.push(currentSong);
+        Song next = playlist.getNextSong();
+        return next;
+    }
+    
+    public Song previousSong(){
+        if(history.isEmpty()){
+            return null;
         }
-
-        // Chọn ngẫu nhiên một index trong ArrayList
-        int randomIndex = random.nextInt(playlist.size());
-        currentSong = playlist.get(randomIndex);
-
-        System.out.println("🎵 Đang phát (Shuffle): " + currentSong);
+        return history.pop();
     }
-
-    // 3. Chức năng Previous Song (Quay lại bài trước bằng Stack)
-    public void previousSong() {
-        if (stackHistory.isEmpty()) {
-            System.out.println("❌ Không có bài hát nào trong lịch sử để quay lại!");
-            return;
-        }
-
-        // Lấy bài hát vừa phát gần nhất ra khỏi Stack
-        Song prevSong = stackHistory.pop();
-        currentSong = prevSong;
-
-        System.out.println("⏮️ Đang phát lại bài trước: " + currentSong);
+    
+    public Song playRepeat(){
+        return playlist.getCurrentSong();
     }
-
-    // Xem bài hiện tại và lịch sử
-    public void displayState() {
-        System.out.println("-> Hiện tại: " + currentSong);
-        System.out.println("-> Lịch sử (Stack): " + stackHistory);
-        System.out.println("------------------------------------");
+    
+    public Song shufflePlay(){
+        return null;
     }
-
-    public static void main(String[] args) {
-        MusicPlayer player = new MusicPlayer();
-        player.addSong(new Song("Bài A"));
-        player.addSong(new Song("Bài B"));
-        player.addSong(new Song("Bài C"));
-        player.addSong(new Song("Bài D"));
-
-        // Giả lập phát nhạc ngẫu nhiên vài lần
-        player.shufflePlay();
-        player.shufflePlay();
-        player.shufflePlay();
-        player.displayState();
-
-        // Bấm nút Previous để lùi lại
-        player.previousSong();
-        player.previousSong();
-        player.displayState();
+    
+    public void loadSampleSongs(){
+        addSong(new Song("S01", "Believer", "Imagine Dragons", 204));
+        addSong(new Song("S02", "Faded", "Alan Walker", 212));
+        addSong(new Song("S03", "Shape Of You", "Ed Sheeran", 235));
+        addSong(new Song("S04", "Closer", "Chainsmoker", 240));
     }
 }
